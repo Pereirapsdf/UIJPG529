@@ -10,11 +10,21 @@ namespace DallJPG529.Contratos529
     {
         public static string HashPassword(string password)
         {
-            using (var sha256 = System.Security.Cryptography.SHA256.Create())
-            {
-                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-                return Convert.ToBase64String(bytes);
-            }
+            using (var rng = new RNGCryptoServiceProvider())
+         {
+          byte[] salt = new byte[16];
+          rng.GetBytes(salt);
+ 
+          var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 100_000, HashAlgorithmName.SHA256);
+           byte[] hash = pbkdf2.GetBytes(32);
+ 
+        // Combinar salt y hash
+        byte[] hashBytes = new byte[48];
+        Array.Copy(salt, 0, hashBytes, 0, 16);
+        Array.Copy(hash, 0, hashBytes, 16, 32);
+
+        return Convert.ToBase64String(hashBytes);
+         }
         }
     }
 }
