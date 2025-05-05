@@ -23,33 +23,49 @@ namespace UIJPG529
         DallJPG529.Mozo529 Mozo = new DallJPG529.Mozo529();
         private void Form1_Load(object sender, EventArgs e)
         {
-            label3.Visible = false;
-            textBox3.Visible = false;
+           
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            label3.Visible = false;
-            textBox3.Visible = false;
+
+            try
+            {
+                if (string.IsNullOrWhiteSpace(textBox1.Text) || string.IsNullOrWhiteSpace(textBox2.Text) || string.IsNullOrWhiteSpace(textBox3.Text))
+                {
+                    MessageBox.Show("Por favor, ingrese un texto.");
+                }
+                else
+                {
+                    User.NombreUsuario = textBox1.Text;
+                    User.Contraseña = textBox2.Text;
+                    User.Dni = Convert.ToInt16(textBox3.Text);
+                    Mozo.Ingre(User.NombreUsuario, User.Contraseña, User.Dni);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
 
-            label3.Visible = true;
-            textBox3.Visible = true;
+           
 
             try
             {
-                if (string.IsNullOrWhiteSpace(textBox1.Text) || string.IsNullOrWhiteSpace(textBox2.Text) || string.IsNullOrWhiteSpace(textBox2.Text))
+                if (string.IsNullOrWhiteSpace(textBox1.Text) || string.IsNullOrWhiteSpace(textBox2.Text) || string.IsNullOrWhiteSpace(textBox3.Text))
                 {           
                     MessageBox.Show("Por favor, ingrese un texto.");
                 }
                 else 
                 {
+                    User.Intento=0;
                     User.NombreUsuario = textBox1.Text;
                     User.Contraseña = textBox2.Text;
-                    User.Dni = textBox3.Text;
+                    User.Dni = Convert.ToInt16( textBox3.Text);
                     Mozo.Add(User.Contraseña, User.NombreUsuario, User.Dni);
                 }
              
