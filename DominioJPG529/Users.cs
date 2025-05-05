@@ -10,7 +10,6 @@ namespace DominioJPG529
     {
         public string NombreUsuario { get; set; }
         public string Contraseña { get; set; }
-            
-        public int Dni{ get; set; }
+        public string Dni { get; set; }
     }
 }

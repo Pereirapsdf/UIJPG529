@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Configuration;
 using Microsoft.Data.SqlClient;
 using DallJPG529.Contratos529;
+using System.Windows.Forms;
+using System.Net;
 namespace DallJPG529
 {
     public class Mozo529
@@ -16,32 +18,33 @@ namespace DallJPG529
             conectionString = ConfigurationManager.ConnectionStrings["ServN"].ConnectionString;
      
         }
-        public void Add(string password, string username)
+        public void Add(string password, string username, string Dni)
         {
             string hash = HashhJPG.HashPassword(password);
 
             using (SqlConnection conn = new SqlConnection(conectionString))
             {
                 conn.Open();
-                string checkQuery = "SELECT COUNT(*) FROM Users WHERE Usuario = @Usuario";
+                string checkQuery = "SELECT COUNT(*) FROM Users WHERE Dni = @Dni";
                 using (SqlCommand checkCmd = new SqlCommand(checkQuery, conn))
                 {
-                    checkCmd.Parameters.AddWithValue("@Usuario", username);
+                    checkCmd.Parameters.AddWithValue("@Dni", Dni);
                     int count = (int)checkCmd.ExecuteScalar();
 
                     if (count > 0)
                     {
-                        Console.WriteLine("El usuario ya existe.");
+                        MessageBox.Show("El usuario ya existe.");
                         return;
                     }
                 }
-                string insertQuery = "INSERT INTO Users (Usuario, Contraseña) VALUES (@Usuario, @Contraseña)";
+                string insertQuery = "INSERT INTO Users (Usuario, Contraseña, Dni) VALUES (@Usuario, @Contraseña,@Dni)";
                 using (SqlCommand insertCmd = new SqlCommand(insertQuery, conn))
                 {
                     insertCmd.Parameters.AddWithValue("@Usuario", username);
                     insertCmd.Parameters.AddWithValue("@Contraseña", hash);
+                    insertCmd.Parameters.AddWithValue("@Dni", Dni);
                     insertCmd.ExecuteNonQuery();
-                    Console.WriteLine("Usuario creado exitosamente.");
+                    MessageBox.Show("Usuario creado exitosamente.");
                 }
             }
         }
@@ -66,7 +69,7 @@ namespace DallJPG529
 
                     if (count == 0)
                     {
-                        Console.WriteLine("Usuario o contraseña incorrectos.");
+                        MessageBox.Show("Usuario o contraseña incorrectos.");
                         return;
                     }
                 }
@@ -80,11 +83,11 @@ namespace DallJPG529
 
                     if (rowsAffected > 0)
                     {
-                        Console.WriteLine("Usuario eliminado exitosamente.");
+                        MessageBox.Show("Usuario eliminado exitosamente.");
                     }
                     else
                     {
-                        Console.WriteLine("No se pudo eliminar el usuario.");
+                        MessageBox.Show ("No se pudo eliminar el usuario.");
                     }
                 }
             }
@@ -106,7 +109,7 @@ namespace DallJPG529
 
                     if (count == 0)
                     {
-                        Console.WriteLine("Usuario o contraseña actual incorrectos.");
+                        MessageBox.Show("Usuario o contraseña actual incorrectos.");
                         return;
                     }
                 }
@@ -122,11 +125,11 @@ namespace DallJPG529
 
                     if (rowsAffected > 0)
                     {
-                        Console.WriteLine("Contraseña actualizada correctamente.");
+                        MessageBox.Show("Contraseña actualizada correctamente.");
                     }
                     else
                     {
-                        Console.WriteLine("Error al actualizar la contraseña.");
+                        MessageBox.Show("Error al actualizar la contraseña.");
                     }
                 }
             }
