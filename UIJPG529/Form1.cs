@@ -16,5 +16,24 @@ namespace UIJPG529
         {
             InitializeComponent();
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            label3.Visible = false;
+            textBox3.Visible = false;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            label3.Visible = false;
+            textBox3.Visible = false;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+            label3.Visible = true;
+            textBox3.Visible = true;
+        }
     }
 }
