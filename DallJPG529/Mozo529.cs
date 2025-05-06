@@ -52,6 +52,8 @@ namespace DallJPG529
         public void Ingre(string username, string password, int dni)
         {
             string hashedPassword = HashhJPG.HashPassword(password);
+            //string veri =Convert.ToBase64String( HashhJPG.VerifyPassword(password, hashedPassword));
+         
 
             using (SqlConnection conn = new SqlConnection(conectionString))
             {
