@@ -21,6 +21,7 @@ namespace UIJPG529
 
         DominioJPG529.Users User = new DominioJPG529.Users();
         DallJPG529.Mozo529 Mozo = new DallJPG529.Mozo529();
+        
         private void Form1_Load(object sender, EventArgs e)
         {
            
@@ -41,6 +42,13 @@ namespace UIJPG529
                     User.Contraseña = textBox2.Text;
                     User.Dni = Convert.ToInt16(textBox3.Text);
                     Mozo.Ingre(User.NombreUsuario, User.Contraseña, User.Dni);
+                    vaciar();
+                    if(Mozo.a == 1)
+                    {
+                        OnLoginSuccessful(username: User.NombreUsuario);
+
+                    }
+
                 }
             }
             catch (Exception ex)
@@ -49,6 +57,21 @@ namespace UIJPG529
             }
         }
 
+        private void OnLoginSuccessful(string username)
+        {
+            this.Hide();
+            Form2 formulario2 = new Form2();
+            formulario2.TextoRecibido = username;
+            formulario2.Show();
+
+        }
+
+        public void vaciar()
+        {
+            textBox1.Text = string.Empty;
+            textBox2.Text = string.Empty;
+            textBox3.Text = string.Empty;
+        }
         private void button1_Click(object sender, EventArgs e)
         {
 
@@ -67,6 +90,7 @@ namespace UIJPG529
                     User.Contraseña = textBox2.Text;
                     User.Dni = Convert.ToInt16( textBox3.Text);
                     Mozo.Add(User.Contraseña, User.NombreUsuario, User.Dni);
+                    vaciar();
                 }
              
                 
