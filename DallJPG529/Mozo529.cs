@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -77,7 +77,7 @@ namespace DallJPG529
 
                     string storedHashedPassword = reader.GetString(0);
                     int intentosFallidos = reader.GetInt32(1);
-                    if (intentosFallidos <= 2 || intentosFallidos>0)
+                    if (intentosFallidos == 2)
                     {
                         b = intentosFallidos;
                     }
@@ -168,23 +168,69 @@ namespace DallJPG529
             using (SqlConnection conn = new SqlConnection(conectionString))
             {
                 conn.Open();
+
+               
                 string checkQuery = "SELECT COUNT(*) FROM Users WHERE Usuario = @Usuario AND Contraseña = @CurrentPassword AND Dni =@DNI";
                 using (SqlCommand checkCmd = new SqlCommand(checkQuery, conn))
                 {
                     checkCmd.Parameters.AddWithValue("@Usuario", username);
                     checkCmd.Parameters.AddWithValue("@CurrentPassword", hashedCurrentPassword);
                     checkCmd.Parameters.AddWithValue("@Dni", Dni);
-                    int count = (int)checkCmd.ExecuteScalar();
+
+                    int count = Convert.ToInt32(checkCmd.ExecuteScalar());
 
                     if (count == 0)
                     {
-                        MessageBox.Show("Usuario o contraseña actual incorrectos.");
-                        return;
+                        //MessageBox.Show("Usuario o contraseña incorrectos.");
+                       
                     }
                 }
 
+     
+                string selectQuery = "SELECT Contraseña, Intento FROM Users WHERE Usuario = @Usuario AND Dni = @DNI";
+                using (SqlCommand selectCmd = new SqlCommand(selectQuery, conn))
+                {
+                    selectCmd.Parameters.AddWithValue("@Usuario", username);
+                    selectCmd.Parameters.AddWithValue("@Dni", Dni);
+
+                    using (SqlDataReader reader = selectCmd.ExecuteReader())
+                    {
+                        if (!reader.Read())
+                        {
+                            MessageBox.Show("Error al obtener los datos del usuario.");
+                            return;
+                        }
+
+                        string storedHashedPassword = reader.GetString(0);
+                        int intentosFallidos = reader.GetInt32(1);
+
+                        if (intentosFallidos >= 4)
+                        {
+                            MessageBox.Show("Tu cuenta está bloqueada por múltiples intentos fallidos. Intenta nuevamente más tarde.");
+                            return;
+                        }
+
+                        if (storedHashedPassword != hashedCurrentPassword)
+                        {
+                            reader.Close(); 
+
+                            string updateFailedAttemptsQuery = "UPDATE Users SET Intento = Intento + 1 WHERE Usuario = @Usuario AND DNI = @DNI";
+                            using (SqlCommand updateCmd = new SqlCommand(updateFailedAttemptsQuery, conn))
+                            {
+                                updateCmd.Parameters.AddWithValue("@Usuario", username);
+                                updateCmd.Parameters.AddWithValue("@DNI", Dni);
+                                updateCmd.ExecuteNonQuery();
+                            }
+
+                            MessageBox.Show("Usuario o contraseña incorrectos.");
+                            return;
+                        }
+
+                    }
+                }
 
                 string updateQuery = "UPDATE Users SET Contraseña = @NewPassword WHERE Usuario = @Usuario AND Dni=@Dni";
+               
                 using (SqlCommand updateCmd = new SqlCommand(updateQuery, conn))
                 {
                     updateCmd.Parameters.AddWithValue("@Usuario", username);
@@ -194,6 +240,14 @@ namespace DallJPG529
 
                     if (rowsAffected > 0)
                     {
+                        string resetFailedAttemptsQuery = "UPDATE Users SET Intento= 0 WHERE Usuario = @Usuario AND DNI = @DNI";
+                        using (SqlCommand resetCmd = new SqlCommand(resetFailedAttemptsQuery, conn))
+                        {
+                            resetCmd.Parameters.AddWithValue("@Usuario", username);
+                            resetCmd.Parameters.AddWithValue("@DNI", Dni);
+                            resetCmd.ExecuteNonQuery();
+                        }
+
                         MessageBox.Show("Contraseña actualizada correctamente.");
                     }
                     else
@@ -202,7 +256,11 @@ namespace DallJPG529
                     }
                 }
             }
-        }
 
+           
+        }
     }
+
 }
+
+
