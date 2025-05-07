@@ -120,46 +120,46 @@ namespace DallJPG529
 
 
 
-        public void Delete(string username, string password)
-        {
-            string hashedPassword = HashhJPG.HashPassword(password);
+        //public void Delete(string username, string password)
+        //{
+        //    string hashedPassword = HashhJPG.HashPassword(password);
 
-            using (SqlConnection conn = new SqlConnection(conectionString))
-            {
-                conn.Open();
+        //    using (SqlConnection conn = new SqlConnection(conectionString))
+        //    {
+        //        conn.Open();
 
-                string checkQuery = "SELECT COUNT(*) FROM Users WHERE Usuario = @Usuario AND Contraseña = @Password";
-                using (SqlCommand checkCmd = new SqlCommand(checkQuery, conn))
-                {
-                    checkCmd.Parameters.AddWithValue("@Usuario", username);
-                    checkCmd.Parameters.AddWithValue("@Password", hashedPassword);
-                    int count = (int)checkCmd.ExecuteScalar();
+        //        string checkQuery = "SELECT COUNT(*) FROM Users WHERE Usuario = @Usuario AND Contraseña = @Password";
+        //        using (SqlCommand checkCmd = new SqlCommand(checkQuery, conn))
+        //        {
+        //            checkCmd.Parameters.AddWithValue("@Usuario", username);
+        //            checkCmd.Parameters.AddWithValue("@Password", hashedPassword);
+        //            int count = (int)checkCmd.ExecuteScalar();
 
-                    if (count == 0)
-                    {
-                        MessageBox.Show("Usuario o contraseña incorrectos.");
-                        return;
-                    }
-                }
+        //            if (count == 0)
+        //            {
+        //                MessageBox.Show("Usuario o contraseña incorrectos.");
+        //                return;
+        //            }
+        //        }
 
-                string deleteQuery = "DELETE FROM Users WHERE Usuario = @Usuario AND Contraseña = @Password";
-                using (SqlCommand deleteCmd = new SqlCommand(deleteQuery, conn))
-                {
-                    deleteCmd.Parameters.AddWithValue("@Usuario", username);
-                    deleteCmd.Parameters.AddWithValue("@Password", hashedPassword);
-                    int rowsAffected = deleteCmd.ExecuteNonQuery();
+        //        string deleteQuery = "DELETE FROM Users WHERE Usuario = @Usuario AND Contraseña = @Password";
+        //        using (SqlCommand deleteCmd = new SqlCommand(deleteQuery, conn))
+        //        {
+        //            deleteCmd.Parameters.AddWithValue("@Usuario", username);
+        //            deleteCmd.Parameters.AddWithValue("@Password", hashedPassword);
+        //            int rowsAffected = deleteCmd.ExecuteNonQuery();
 
-                    if (rowsAffected > 0)
-                    {
-                        MessageBox.Show("Usuario eliminado exitosamente.");
-                    }
-                    else
-                    {
-                        MessageBox.Show ("No se pudo eliminar el usuario.");
-                    }
-                }
-            }
-        }
+        //            if (rowsAffected > 0)
+        //            {
+        //                MessageBox.Show("Usuario eliminado exitosamente.");
+        //            }
+        //            else
+        //            {
+        //                MessageBox.Show ("No se pudo eliminar el usuario.");
+        //            }
+        //        }
+        //    }
+        //}
         public void Update(string username,int Dni, string currentPassword, string newPassword)
         {
             string hashedCurrentPassword = HashhJPG.HashPassword(currentPassword);
