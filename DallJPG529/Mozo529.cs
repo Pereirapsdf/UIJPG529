@@ -35,7 +35,7 @@ namespace DallJPG529
 
                     if (count > 0)
                     {
-                        MessageBox.Show("El usuario ya existe.");
+                        MessageBox.Show("El usuario con el Dni:" + Dni + "ya existe");
                         return;
                     }
                 }
@@ -71,7 +71,7 @@ namespace DallJPG529
 
                     if (!reader.Read())
                     {
-                        MessageBox.Show("Usuario o contraseña incorrectos.");
+                        MessageBox.Show("Usuario,contraseña o Dni incorrectos.");
                         return;
                     }
 
@@ -99,7 +99,7 @@ namespace DallJPG529
                             updateCmd.Parameters.AddWithValue("@DNI", dni);
                             updateCmd.ExecuteNonQuery();
                         }
-                        MessageBox.Show("Usuario o contraseña incorrectos.");
+                        MessageBox.Show("Usuario ,contraseña o Dni incorrectos..");
                         return;
                     }
 
@@ -222,7 +222,7 @@ namespace DallJPG529
                                 updateCmd.ExecuteNonQuery();
                             }
 
-                            MessageBox.Show("Usuario o contraseña incorrectos.");
+                            MessageBox.Show("Usuario , contraseña o Dni incorrectos.");
                             return;
                         }
 
