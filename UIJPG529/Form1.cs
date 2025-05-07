@@ -19,14 +19,17 @@ namespace UIJPG529
             InitializeComponent();
         }
 
-        DominioJPG529.Users User = new DominioJPG529.Users();
+        DominioJPG529.Users529 User = new DominioJPG529.Users529();
         DallJPG529.Mozo529 Mozo = new DallJPG529.Mozo529();
-        
+        DominioJPG529.Admin529 Admin = new DominioJPG529.Admin529();
+        DallJPG529.Admi_user529 Admi = new DallJPG529.Admi_user529();
+
         private void Form1_Load(object sender, EventArgs e)
         {
             button3.Visible = false;
             label4.Visible = false;
             textBox4.Visible = false;
+            //ddsfsdfdsfsdf
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -34,30 +37,47 @@ namespace UIJPG529
 
             try
             {
+
                 if (string.IsNullOrWhiteSpace(textBox1.Text) || string.IsNullOrWhiteSpace(textBox2.Text) || string.IsNullOrWhiteSpace(textBox3.Text))
                 {
                     MessageBox.Show("Por favor, ingrese un texto.");
                 }
                 else
                 {
-                    User.NombreUsuario = textBox1.Text;
-                    User.Contraseña = textBox2.Text;
-                    User.Dni = Convert.ToInt16(textBox3.Text);
-                    Mozo.Ingre(User.NombreUsuario, User.Contraseña, User.Dni);
-                    vaciar();
-                    if(Mozo.a == 1)
+                    if (checkBox1.Checked == true)
                     {
-                        OnLoginSuccessful(username: User.NombreUsuario);
+                        Admin.NombreUsuario = textBox1.Text;
+                        Admin.Contraseña = textBox2.Text;
+                        Admin.Dni = Convert.ToInt16(textBox3.Text);
+                        Admi.Ingre(Admin.NombreUsuario, Admin.Contraseña, Admin.Dni);
 
+                        if(Admi.a == 1)
+                        {
+                            OnLoginSuccessful(username: Admin.NombreUsuario);
+                        }
                     }
-                    if (Mozo.b == 2)
+                    else
                     {
-                        MessageBox.Show("Puede cambiar la contraseña si no la recuerda.");
-                        button3.Visible = true;
-                        label4.Visible = true;
-                        textBox4.Visible = true;
+
+
+                        User.NombreUsuario = textBox1.Text;
+                        User.Contraseña = textBox2.Text;
+                        User.Dni = Convert.ToInt16(textBox3.Text);
+                        Mozo.Ingre(User.NombreUsuario, User.Contraseña, User.Dni);
+                        vaciar();
+                        if (Mozo.a == 1)
+                        {
+                            OnLoginSuccessful(username: User.NombreUsuario);
+
+                        }
+                        if (Mozo.b == 2)
+                        {
+                            MessageBox.Show("Puede cambiar la contraseña si no la recuerda.");
+                            button3.Visible = true;
+                            label4.Visible = true;
+                            textBox4.Visible = true;
+                        }
                     }
-                   
                    
                 }
             }
@@ -72,6 +92,14 @@ namespace UIJPG529
             this.Hide();
             Form2 formulario2 = new Form2();
             formulario2.TextoRecibido = username;
+            if (checkBox1.Checked==true)
+            {
+                formulario2.Adm = true;
+            }
+            else
+            {
+                formulario2.Adm = false;
+            }
             formulario2.Show();
 
         }
@@ -138,7 +166,17 @@ namespace UIJPG529
             }
         }
 
-      
-      
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+          
+            if(checkBox1.Checked)
+            {
+                button1.Visible = false;
+            }
+            else
+            {
+                button1.Visible = true;
+            }
+        }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DominioJPG529
 {
-    public class Users
+    public class Users529
     {
         public string NombreUsuario { get; set; }
         public string Contraseña { get; set; }
