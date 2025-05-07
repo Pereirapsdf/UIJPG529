@@ -52,6 +52,7 @@ namespace DallJPG529
             }
         }
         public int a=0;
+        public int b;
         public void Ingre(string username, string password, int dni)
         {
             string hashedPassword = HashhJPG.HashPassword(password);
@@ -76,6 +77,10 @@ namespace DallJPG529
 
                     string storedHashedPassword = reader.GetString(0);
                     int intentosFallidos = reader.GetInt32(1);
+                    if (intentosFallidos == 2)
+                    {
+                        b = intentosFallidos;
+                    }
 
                     reader.Close(); 
 
@@ -155,7 +160,7 @@ namespace DallJPG529
                 }
             }
         }
-        public void Update(string username, string currentPassword, string newPassword)
+        public void Update(string username,int Dni, string currentPassword, string newPassword)
         {
             string hashedCurrentPassword = HashhJPG.HashPassword(currentPassword);
             string hashedNewPassword = HashhJPG.HashPassword(newPassword);
@@ -163,11 +168,12 @@ namespace DallJPG529
             using (SqlConnection conn = new SqlConnection(conectionString))
             {
                 conn.Open();
-                string checkQuery = "SELECT COUNT(*) FROM Users WHERE Usuario = @Usuario AND Contraseña = @CurrentPassword";
+                string checkQuery = "SELECT COUNT(*) FROM Users WHERE Usuario = @Usuario AND Contraseña = @CurrentPassword AND Dni =@DNI";
                 using (SqlCommand checkCmd = new SqlCommand(checkQuery, conn))
                 {
                     checkCmd.Parameters.AddWithValue("@Usuario", username);
                     checkCmd.Parameters.AddWithValue("@CurrentPassword", hashedCurrentPassword);
+                    checkCmd.Parameters.AddWithValue("@Dni", Dni);
                     int count = (int)checkCmd.ExecuteScalar();
 
                     if (count == 0)
@@ -178,12 +184,12 @@ namespace DallJPG529
                 }
 
 
-                string updateQuery = "UPDATE Usuarios SET Contraseña = @NewPassword WHERE Usuario = @Usuario";
+                string updateQuery = "UPDATE Usuario SET Contraseña = @NewPassword WHERE Usuario = @Usuario AND Dni=@Dni";
                 using (SqlCommand updateCmd = new SqlCommand(updateQuery, conn))
                 {
                     updateCmd.Parameters.AddWithValue("@Usuario", username);
                     updateCmd.Parameters.AddWithValue("@NewPassword", hashedNewPassword);
-
+                    updateCmd.Parameters.AddWithValue("@Dni", Dni);
                     int rowsAffected = updateCmd.ExecuteNonQuery();
 
                     if (rowsAffected > 0)

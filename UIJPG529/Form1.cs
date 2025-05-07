@@ -24,7 +24,9 @@ namespace UIJPG529
         
         private void Form1_Load(object sender, EventArgs e)
         {
-           
+            button3.Visible = false;
+            label4.Visible = false;
+            textBox4.Visible = false;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -48,7 +50,15 @@ namespace UIJPG529
                         OnLoginSuccessful(username: User.NombreUsuario);
 
                     }
-
+                    if (Mozo.b == 1)
+                    {
+                        MessageBox.Show("Puede cambiar la contraseña si no la recuerda.");
+                        button3.Visible = true;
+                        label4.Visible = true;
+                        textBox4.Visible = true;
+                    }
+                   
+                   
                 }
             }
             catch (Exception ex)
@@ -100,5 +110,35 @@ namespace UIJPG529
                 MessageBox.Show("Error: " + ex.Message);
             }
         }
+
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            
+
+
+            try
+            {
+                if (string.IsNullOrWhiteSpace(textBox1.Text) || string.IsNullOrWhiteSpace(textBox2.Text) || string.IsNullOrWhiteSpace(textBox3.Text) || string.IsNullOrWhiteSpace(textBox3.Text))
+                {
+                    MessageBox.Show("Por favor, ingrese un texto.");
+                }
+                else
+                {
+                    User.NombreUsuario = textBox1.Text;
+                    User.Contraseña = textBox2.Text;
+                    User.Dni = Convert.ToInt16(textBox3.Text);
+                    Mozo.Update(User.NombreUsuario, User.Dni, User.Contraseña,textBox4.Text);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+        }
+
+      
+      
     }
 }
