@@ -176,9 +176,34 @@ namespace DallJPG529
                     checkCmd.Parameters.AddWithValue("@Dni", Dni);
                     int count = (int)checkCmd.ExecuteScalar();
 
-                    if (count == 0)
+                    SqlDataReader reader = checkCmd.ExecuteReader();
+
+                    if (!reader.Read())
                     {
-                        MessageBox.Show("Usuario o contraseña actual incorrectos.");
+                        MessageBox.Show("Usuario o contraseña incorrectos.");
+                        return;
+                    }
+                    reader.Close();
+
+                    string storedHashedPassword = reader.GetString(0);
+                    int intentosFallidos = reader.GetInt32(1);
+
+                    if (intentosFallidos >= 3)
+                    {
+                        MessageBox.Show("Tu cuenta está bloqueada por múltiples intentos fallidos. Intenta nuevamente más tarde.");
+                        return;
+                    }
+
+                    if (storedHashedPassword != hashedCurrentPassword)
+                    {
+                        string updateFailedAttemptsQuery = "UPDATE Users SET Intento = Intento + 1 WHERE Usuario = @Usuario AND DNI = @DNI";
+                        using (SqlCommand updateCmd = new SqlCommand(updateFailedAttemptsQuery, conn))
+                        {
+                            updateCmd.Parameters.AddWithValue("@Usuario", username);
+                            updateCmd.Parameters.AddWithValue("@DNI", Dni);
+                            updateCmd.ExecuteNonQuery();
+                        }
+                        MessageBox.Show("Usuario o contraseña incorrectos.");
                         return;
                     }
                 }
