@@ -50,7 +50,7 @@ namespace UIJPG529
                         OnLoginSuccessful(username: User.NombreUsuario);
 
                     }
-                    if (Mozo.b == 1)
+                    if (Mozo.b == 2)
                     {
                         MessageBox.Show("Puede cambiar la contraseña si no la recuerda.");
                         button3.Visible = true;
