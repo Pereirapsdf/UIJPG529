@@ -44,6 +44,7 @@ namespace UIJPG529
                     textBox5.Visible = false;
                     textBox6.Visible = false;
                     button4.Visible = false;
+                    button3.Visible = false;
                 }
             }
             catch (Exception ex)
@@ -94,6 +95,20 @@ namespace UIJPG529
         {
             Admi_user529.Cambio(textBox5.Text, Convert.ToInt16(textBox6.Text));
             dataGridView1.DataSource = Admi_user529.ObtenerClientes(textBox5.Text, Convert.ToInt16(textBox6.Text));
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            label4.Visible = false;
+            textBox4.Visible = false;
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
         }
     }
  }

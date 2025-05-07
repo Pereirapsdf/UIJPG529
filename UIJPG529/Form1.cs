@@ -51,7 +51,7 @@ namespace UIJPG529
                         Admin.Dni = Convert.ToInt16(textBox3.Text);
                         Admi.Ingre(Admin.NombreUsuario, Admin.Contraseña, Admin.Dni);
 
-                        if(Admi.a == 1)
+                        if (Admi.a == 1)
                         {
                             OnLoginSuccessful(username: Admin.NombreUsuario);
                         }
@@ -78,7 +78,7 @@ namespace UIJPG529
                             textBox4.Visible = true;
                         }
                     }
-                   
+
                 }
             }
             catch (Exception ex)
@@ -92,7 +92,7 @@ namespace UIJPG529
             this.Hide();
             Form2 formulario2 = new Form2();
             formulario2.TextoRecibido = username;
-            if (checkBox1.Checked==true)
+            if (checkBox1.Checked == true)
             {
                 formulario2.Adm = true;
             }
@@ -109,29 +109,30 @@ namespace UIJPG529
             textBox1.Text = string.Empty;
             textBox2.Text = string.Empty;
             textBox3.Text = string.Empty;
+            textBox4.Text = string.Empty;
         }
         private void button1_Click(object sender, EventArgs e)
         {
 
-           
+
 
             try
             {
                 if (string.IsNullOrWhiteSpace(textBox1.Text) || string.IsNullOrWhiteSpace(textBox2.Text) || string.IsNullOrWhiteSpace(textBox3.Text))
-                {           
+                {
                     MessageBox.Show("Por favor, ingrese un texto.");
                 }
-                else 
+                else
                 {
-                    User.Intento=0;
+                    User.Intento = 0;
                     User.NombreUsuario = textBox1.Text;
                     User.Contraseña = textBox2.Text;
-                    User.Dni = Convert.ToInt16( textBox3.Text);
+                    User.Dni = Convert.ToInt16(textBox3.Text);
                     Mozo.Add(User.Contraseña, User.NombreUsuario, User.Dni);
                     vaciar();
                 }
-             
-                
+
+
             }
             catch (Exception ex)
             {
@@ -142,7 +143,7 @@ namespace UIJPG529
 
         private void button3_Click(object sender, EventArgs e)
         {
-            
+
 
 
             try
@@ -153,11 +154,22 @@ namespace UIJPG529
                 }
                 else
                 {
-                    User.NombreUsuario = textBox1.Text;
-                    User.Contraseña = textBox2.Text;
-                    User.Dni = Convert.ToInt16(textBox3.Text);
-                    Mozo.Update(User.NombreUsuario, User.Dni, User.Contraseña,textBox4.Text);
-
+                    if (checkBox1.Checked == true)
+                    {
+                        Admin.NombreUsuario = textBox1.Text;
+                        Admin.Contraseña = textBox2.Text;
+                        Admin.Dni = Convert.ToInt16(textBox3.Text);
+                        Admi.Cambio(Admin.NombreUsuario, Admin.Dni);
+                    }
+                    else
+                    {
+                        User.Intento = 0;
+                        User.NombreUsuario = textBox1.Text;
+                        User.Contraseña = textBox2.Text;
+                        User.Dni = Convert.ToInt16(textBox3.Text);
+                        Mozo.Update(User.NombreUsuario, User.Dni, User.Contraseña, textBox4.Text);
+                        vaciar();
+                    }
                 }
             }
             catch (Exception ex)
@@ -165,17 +177,36 @@ namespace UIJPG529
                 MessageBox.Show("Error: " + ex.Message);
             }
         }
-
+        public int a = 0;
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-          
-            if(checkBox1.Checked)
+
+            if (checkBox1.Checked)
             {
+                if (button3.Visible == true)
+                {
+                    a = 1;
+                }
                 button1.Visible = false;
+                button3.Visible = false;
+                label4.Visible = false;
+                textBox4.Visible = false;
             }
             else
             {
                 button1.Visible = true;
+                if (a == 1)
+                {
+                    button3.Visible = true;
+                    label4.Visible = true;
+                    textBox4.Visible = true;
+                }
+                else
+                {
+                    button3.Visible = false;
+                    label4.Visible = false;
+                    textBox4.Visible = false;
+                }
             }
         }
     }
