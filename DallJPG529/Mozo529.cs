@@ -77,14 +77,14 @@ namespace DallJPG529
 
                     string storedHashedPassword = reader.GetString(0);
                     int intentosFallidos = reader.GetInt32(1);
-                    if (intentosFallidos == 2)
+                    if (intentosFallidos <= 2 || intentosFallidos>0)
                     {
                         b = intentosFallidos;
                     }
 
                     reader.Close(); 
 
-                    if (intentosFallidos >= 3)
+                    if (intentosFallidos >= 4)
                     {
                         MessageBox.Show("Tu cuenta está bloqueada por múltiples intentos fallidos. Intenta nuevamente más tarde.");
                         return;
@@ -184,7 +184,7 @@ namespace DallJPG529
                 }
 
 
-                string updateQuery = "UPDATE Usuario SET Contraseña = @NewPassword WHERE Usuario = @Usuario AND Dni=@Dni";
+                string updateQuery = "UPDATE Users SET Contraseña = @NewPassword WHERE Usuario = @Usuario AND Dni=@Dni";
                 using (SqlCommand updateCmd = new SqlCommand(updateQuery, conn))
                 {
                     updateCmd.Parameters.AddWithValue("@Usuario", username);
