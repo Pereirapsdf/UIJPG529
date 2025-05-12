@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Configuration;
 using Microsoft.Data.SqlClient;
 using DallJPG529.Contratos529;
+using DallJPG529.Servicios529;
 using System.Windows.Forms;
 using System.Net;
 namespace DallJPG529
@@ -20,6 +21,9 @@ namespace DallJPG529
             conectionString = ConfigurationManager.ConnectionStrings["ServN"].ConnectionString;
      
         }
+        
+        
+
         public void Add(string password, string username, int Dni)
         {
             string hash = HashhJPG.HashPassword(password);

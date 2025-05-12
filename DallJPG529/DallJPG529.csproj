@@ -162,10 +162,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Admi_user529.cs" />
+    <Compile Include="User529.cs" />
     <Compile Include="Contratos529\HashhJPG.cs" />
     <Compile Include="Contratos529\IgenricaJPG.cs" />
     <Compile Include="Mozo529.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Servicios529\ProviderJPG.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
