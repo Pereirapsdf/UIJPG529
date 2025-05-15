@@ -50,8 +50,8 @@ namespace UIJPG529
                         Admin.NombreUsuario = textBox1.Text;
                         Admin.Contraseña = textBox2.Text;
                         Admin.Dni = Convert.ToInt16(textBox3.Text);
-                        //Admi.Ingre(Admin.NombreUsuario, Admin.Contraseña, Admin.Dni);
-                        Use.Login(Admin.NombreUsuario, Admin.Contraseña, Admin.Dni);
+                        Admi.Ingre(Admin.NombreUsuario, Admin.Contraseña, Admin.Dni);
+                        
                         if (Admi.a == 1)
                         {
                             OnLoginSuccessful(username: Admin.NombreUsuario);
@@ -64,7 +64,8 @@ namespace UIJPG529
                         User.NombreUsuario = textBox1.Text;
                         User.Contraseña = textBox2.Text;
                         User.Dni = Convert.ToInt16(textBox3.Text);
-                        Mozo.Ingre(User.NombreUsuario, User.Contraseña, User.Dni);
+                        Use.Login(Admin.NombreUsuario, Admin.Contraseña, Admin.Dni);
+                        //Mozo.Ingre(User.NombreUsuario, User.Contraseña, User.Dni);
                         vaciar();
                         if (Mozo.a == 1)
                         {
